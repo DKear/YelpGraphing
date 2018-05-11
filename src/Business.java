@@ -1,3 +1,4 @@
+//Business class, contains a reference object class so that neighbors take up less space. Businesses have a key, a name, a location, a review, 4 neighbors and their 4 corresponding edges.
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -15,18 +16,21 @@ public class Business {
     int key;
     String name;
     double stars;
-    double similarity;
     int reviewCount;
     double longitude;
     double latitude;
     ArrayList<BusinessRef> neighbors = new ArrayList<>();
-    int disjoinKey;
+    int disjointKey;
     Boolean inSet = false;
+    double value = Double.POSITIVE_INFINITY;
+    ArrayList<Edge> edges = new ArrayList<>();
 
     public void addNeighbor(int k, double d){
         BusinessRef b = new BusinessRef(k, d);
         neighbors.add(b);
     }
+
+
 
     public Business(int k, String n, double s, int r, double lon, double lat){
         key = k;
@@ -36,6 +40,13 @@ public class Business {
         longitude = lon;
         latitude = lat;
 
+    }
+
+    public double getSimilarity(Business b){
+        if(b.key == 999999){
+            return 10;
+        }
+        return Math.abs((b.stars * b.reviewCount) - (this.stars * this.reviewCount));
     }
 
     public Business(){}
